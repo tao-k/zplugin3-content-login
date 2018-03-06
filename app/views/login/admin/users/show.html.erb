@@ -1,0 +1,12 @@
+<table class="show">
+  <tr>
+    <th><%= @item.class.human_attribute_name :state %></th>
+    <td><%= @item.state_text %></td>
+  </tr><tr>
+    <th><%= @item.class.human_attribute_name :account %></th>
+    <td><%= @item.account %></td>
+  </tr><tr>
+    <th><%= @item.class.human_attribute_name :password %></th>
+    <td><%= @item.password %></td>
+  </tr>
+</table>

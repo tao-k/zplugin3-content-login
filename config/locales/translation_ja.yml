@@ -1,0 +1,12 @@
+ja:
+  activerecord:
+    models:
+      login/user: ユーザー
+    attributes:
+      login/user:
+        account: ID
+        password: パスワード
+        password_confirm: パスワード（確認）
+        password_digest: パスワード
+        updated_at: 更新日時
+        state: 状態

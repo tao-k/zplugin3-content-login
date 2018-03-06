@@ -1,0 +1,16 @@
+<table class="show">
+  <tr>
+    <th><%= @item.class.human_attribute_name :state %></th>
+    <td>
+        <%= f.radio_buttons :state, @item.states, :class => 'status' %>
+    </td>
+  </tr>
+  <tr>
+    <th><%= @item.class.human_attribute_name :account %></th>
+    <td><%= f.text_field :account, :class => 'id' %></td>
+  </tr>
+  <tr>
+    <th><%= @item.class.human_attribute_name :password %></th>
+    <td><%= f.text_field :password, :class => 'id' %></td>
+  </tr>
+</table>

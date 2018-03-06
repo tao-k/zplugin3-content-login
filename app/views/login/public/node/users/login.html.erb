@@ -1,0 +1,10 @@
+<%= form_tag "#{Page.current_node.public_uri}login", method: :post do -%>
+<% if flash[:notice] %><div class="notice"><%= flash[:notice] %></div><% end %>
+  <div class="fields">
+    <%= text_field_tag :account, nil, placeholder: 'ユーザーID', title: 'ユーザーID' %><br />
+    <%= password_field_tag :password, nil, placeholder: 'パスワード', title: 'パスワード' %>
+  </div>
+  <div class="submitters">
+    <%= submit_tag 'ログイン' %>
+  </div>
+<%- end -%>
