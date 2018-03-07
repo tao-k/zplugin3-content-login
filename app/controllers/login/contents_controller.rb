@@ -12,14 +12,14 @@ class Login::ContentsController < Cms::Controller::Admin::Base
   def install
     install_plugin
     flash[:notice] = "インストールを実行しました。"
-    redirect_to zomeki_login_engine.url_for(action: :index)
+    redirect_to zplugin3_content_login_engine.url_for(action: :index)
   end
 
 private
 
   def install_plugin
-    `bundle exec rake zomeki_login_engine:install:migrations RAILS_ENV=#{Rails.env}`
-    `bundle exec rake db:migrate SCOPE=zomeki_login_engine RAILS_ENV=#{Rails.env}`
+    `bundle exec rake zplugin3_content_login_engine:install:migrations RAILS_ENV=#{Rails.env}`
+    `bundle exec rake db:migrate SCOPE=zplugin3_content_login_engine RAILS_ENV=#{Rails.env}`
   end
 
 end
