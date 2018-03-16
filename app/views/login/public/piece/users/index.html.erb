@@ -1,7 +1,7 @@
 <%- if @node -%>
   <%- if @login_user.blank? -%>
-    <%= link_to "ログイン", @login_uri, class: 'login' %>
+    <%= link_to @piece.login_label, @login_uri, class: 'login' %>
   <%- else -%>
-    <%= link_to "ログアウト", @logout_uri, class: 'logout' %>
+    <%= link_to @piece.logout_label, @logout_uri, class: 'logout' %>
   <%- end -%>
 <%- end -%>

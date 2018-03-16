@@ -10,3 +10,6 @@ ja:
         password_digest: パスワード
         updated_at: 更新日時
         state: 状態
+      login/piece/user:
+        login_label: ログインリンク文字
+        logout_label: ログアウトリンク文字

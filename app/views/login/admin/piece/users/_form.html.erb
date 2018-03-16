@@ -1,1 +1,14 @@
-<%= render 'shared/admin/piece/form', f: f %>
+<%= render 'shared/admin/piece/form', f: f do -%>
+<p class="form">詳細設定</p>
+
+<table class="show">
+  <tr>
+    <th><%= f.label :login_label %></th>
+    <td><%= f.array_text_field 'in_settings[login_label]', :class => 'name' %></td>
+  </tr>
+  <tr>
+    <th><%= f.label :logout_label %></th>
+    <td><%= f.array_text_field 'in_settings[logout_label]', :class => 'name' %></td>
+  </tr>
+</table>
+<%- end -%>

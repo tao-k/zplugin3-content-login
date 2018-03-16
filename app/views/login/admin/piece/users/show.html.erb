@@ -1,1 +1,14 @@
-<%= render 'shared/admin/piece/show' -%>
+<%= render 'shared/admin/piece/show' do -%>
+<p class="form">詳細設定</p>
+
+<table class="show">
+  <tr>
+    <th><%= @item.class.human_attribute_name :login_label %></th>
+    <td><%= @item.setting_value(:login_label) %></td>
+  </tr>
+  <tr>
+    <th><%= @item.class.human_attribute_name :logout_label %></th>
+    <td><%= @item.setting_value(:logout_label) %></td>
+  </tr>
+</table>
+<%- end -%>
