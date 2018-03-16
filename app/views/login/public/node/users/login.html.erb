@@ -1,3 +1,4 @@
+<div class="contentPublicLogin">
 <%= form_tag "#{Page.current_node.public_uri}login", method: :post do -%>
 <% if flash[:notice] %><div class="notice"><%= flash[:notice] %></div><% end %>
   <div class="fields">
@@ -8,3 +9,4 @@
     <%= submit_tag 'ログイン' %>
   </div>
 <%- end -%>
+</div>
