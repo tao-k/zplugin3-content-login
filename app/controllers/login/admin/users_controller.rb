@@ -28,14 +28,12 @@ class Login::Admin::UsersController < Cms::Controller::Admin::Base
 
   def update
     @item = @content.users.find(params[:id])
-    return error_auth if !Core.user.root? && @item.root?
     @item.attributes = user_params
     _update(@item)
   end
 
   def destroy
     @item = @content.users.find(params[:id])
-    return error_auth if !Core.user.root? && @item.root?
     _destroy(@item)
   end
 
