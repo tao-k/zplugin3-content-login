@@ -14,8 +14,8 @@ class Login::Content::User < Cms::Content
   end
 
   def login_user
-    account = Core.get_cookie('login_account')
-    token   = Core.get_cookie('user_remember_token')
+    account = Core.get_cookie('login_account') rescue nil
+    token   = Core.get_cookie('user_remember_token') rescue nil
     return nil if account.blank? || token.blank?
     user_table = Login::User.arel_table
     self.users
