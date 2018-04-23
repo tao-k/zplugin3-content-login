@@ -9,6 +9,7 @@ class Login::Admin::UsersController < Cms::Controller::Admin::Base
 
   def index
     @items = @content.users
+    @items = @items.organized_into(Core.user_group.id) if !Core.user.has_auth?(:manager)
     if params[:csv]
       return export_csv(@items)
     else
@@ -60,7 +61,7 @@ class Login::Admin::UsersController < Cms::Controller::Admin::Base
   private
 
   def user_params
-    params.require(:item).permit(:state, :account, :password)
+    params.require(:item).permit(:state, :account, :password, :creator_attributes => [:id, :group_id, :user_id])
   end
 
   def export_csv(users)

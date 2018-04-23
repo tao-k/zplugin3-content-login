@@ -20,7 +20,8 @@ class Login::User::Csv < Login::Csv
 
     user.validate
     line.data_attributes = {
-      user_attributes: user_attributes
+      user_attributes: user_attributes,
+      creator_attributes: {user_id: Core.user.id, group_id: Core.user_group.id}
     }
     line.data_invalid = user.errors.blank? ? 0 : 1
     line.data_errors = user.errors.full_messages.to_a if user.errors.present?
@@ -33,9 +34,12 @@ class Login::User::Csv < Login::Csv
   end
 
   def register(line)
-    user_attributes = line.csv_data_attributes['user_attributes']
-
-    user = content.users.where(id: user_attributes['id']).first || content.users.new
+    user_attributes    = line.csv_data_attributes['user_attributes']
+    target_item = content.users.where(id: user_attributes['id'])
+    if !Core.user.has_auth?(:manager)
+      target_item = target_item.organized_into(Core.user_group.id)
+    end
+    user = target_item.first || content.users.new
     user_attributes.each do |key , value|
       next if key == 'id'
       user[key] = value
