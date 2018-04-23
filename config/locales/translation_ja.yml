@@ -4,6 +4,7 @@ ja:
       login/user: ユーザー
     attributes:
       login/user:
+        id: No.
         account: ID
         password: パスワード
         password_confirm: パスワード（確認）

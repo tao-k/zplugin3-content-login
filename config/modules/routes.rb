@@ -12,7 +12,12 @@ ZomekiCMS::Application.routes.draw do
   #  ## contents
     resources(:users,
       :controller => 'admin/users',
-      :path       => ':content/users')
+      :path       => ':content/users') do
+        collection do
+          post :import
+          get  :import
+        end
+      end
 
     ## nodes
     resources :node_users,

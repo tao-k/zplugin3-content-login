@@ -8,12 +8,17 @@ class Login::Admin::UsersController < Cms::Controller::Admin::Base
   end
 
   def index
-    @items = @content.users.paginate(page: params[:page], per_page: params[:limit])
+    @items = @content.users
+    @items = @items.organized_into(Core.user_group.id) if !Core.user.has_auth?(:manager)
+    if params[:csv]
+      return export_csv(@items)
+    else
+      @items = @items.paginate(page: params[:page], per_page: 30).order(updated_at: :desc)
+    end
   end
 
   def show
     @item = @content.users.find(params[:id])
-    return error_auth unless @item.readable?
     _show @item
   end
 
@@ -37,10 +42,39 @@ class Login::Admin::UsersController < Cms::Controller::Admin::Base
     _destroy(@item)
   end
 
+  def import
+    if params.dig(:item, :file)
+      item = Login::User::Csv.new
+      item.file = params[:item][:file]
+      item.content_id = @content.id
+      if item.save
+        flash[:notice] = "CSVの登録を完了しました。"
+        Login::ImportUserJob.perform_now(item.id)
+        return redirect_to url_for({:action=>:import})
+      else
+        flash[:notice] = "CSVの解析に失敗しました。"
+        return redirect_to url_for({:action=>:import})
+      end
+    end
+  end
+
   private
 
   def user_params
-    params.require(:item).permit(:state, :account, :password)
+    params.require(:item).permit(:state, :account, :password, :creator_attributes => [:id, :group_id, :user_id])
+  end
+
+  def export_csv(users)
+    require 'csv'
+    bom = %w(EF BB BF).map { |e| e.hex.chr }.join
+    data = CSV.generate(bom, force_quotes: true) do |csv|
+      columns = [ "No.", "状態", "ID", "パスワード" ]
+      csv << columns
+      users.each do |user|
+        csv << [user.id, user.state_text, user.account, user.password]
+      end
+    end
+    send_data data, type: 'text/csv', filename: "#{@content.name}_データ一覧_#{Time.now.to_i}.csv"
   end
 
 end
