@@ -1,6 +1,7 @@
 <table class="index">
   <tr>
     <th style="width: 60px; text-align: center;">詳細</th>
+    <th style="text-align: center; width: 80px;"><%= Login::User.human_attribute_name :id %></th>
     <th><%= Login::User.human_attribute_name :account %></th>
     <th style="text-align: left; width: 80px;"><%= Login::User.human_attribute_name :state %></th>
     <th style="text-align: left; width: 150px;"><%= Login::User.human_attribute_name :updated_at %></th>
@@ -8,6 +9,7 @@
   <%- @items.each do |item| -%>
   <tr class="<%= cycle '', 'cycle' %>">
     <td style="text-align: center;"><%= link_to :show, { action: :show, id: item } %></td>
+    <td style="text-align: right;"><%= item.id %></td>
     <td><%= item.account %></td>
     <td><%= item.state_text %></td>
     <td><%= l item.updated_at %></td>
