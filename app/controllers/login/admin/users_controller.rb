@@ -67,10 +67,10 @@ class Login::Admin::UsersController < Cms::Controller::Admin::Base
     require 'csv'
     bom = %w(EF BB BF).map { |e| e.hex.chr }.join
     data = CSV.generate(bom, force_quotes: true) do |csv|
-      columns = [ "No.", "状態", "ID", "パスワード" ]
+      columns = [ "No.", "状態", "削除", "ID", "パスワード" ]
       csv << columns
       users.each do |user|
-        csv << [user.id, user.state_text, user.account, user.password]
+        csv << [user.id, user.state_text, nil, user.account, user.password]
       end
     end
     send_data data, type: 'text/csv', filename: "#{@content.name}_データ一覧_#{Time.now.to_i}.csv"
