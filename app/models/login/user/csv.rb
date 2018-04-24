@@ -7,11 +7,13 @@ class Login::User::Csv < Login::Csv
 
     user = content.users.where(id: row['No.']).first || content.users.new
     user_attributes = {}
+    delete_attributes = {}
 
     user_attributes['id']       = row['No.']
     user_attributes['state']    = state_to_status(user, row['状態'])
     user_attributes['account']  = row['ID']
     user_attributes['password'] = row['パスワード']
+    delete_attributes['delete'] = row['削除']
 
     user_attributes.each do |key , value|
       next if key == :id
@@ -21,7 +23,7 @@ class Login::User::Csv < Login::Csv
     user.validate
     line.data_attributes = {
       user_attributes: user_attributes,
-      creator_attributes: {user_id: Core.user.id, group_id: Core.user_group.id}
+      delete_attributes: delete_attributes
     }
     line.data_invalid = user.errors.blank? ? 0 : 1
     line.data_errors = user.errors.full_messages.to_a if user.errors.present?
@@ -35,12 +37,17 @@ class Login::User::Csv < Login::Csv
 
   def register(line)
     user_attributes    = line.csv_data_attributes['user_attributes']
+    delete_attributes  = line.csv_data_attributes['delete_attributes']
     user = content.users.where(id: user_attributes['id']).first || content.users.new
-    user_attributes.each do |key , value|
-      next if key == 'id'
-      user[key] = value
+    if user_attributes['id'].present? && user.present? &&  delete_attributes['delete'].present?
+      user.destroy if delete_attributes['delete'] == '削除'
+    else
+      user_attributes.each do |key , value|
+        next if key == 'id'
+        user[key] = value
+      end
+      user.save
     end
-    user.save
     user
   end
 end
