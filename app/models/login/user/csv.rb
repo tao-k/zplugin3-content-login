@@ -35,11 +35,7 @@ class Login::User::Csv < Login::Csv
 
   def register(line)
     user_attributes    = line.csv_data_attributes['user_attributes']
-    target_item = content.users.where(id: user_attributes['id'])
-    if !Core.user.has_auth?(:manager)
-      target_item = target_item.organized_into(Core.user_group.id)
-    end
-    user = target_item.first || content.users.new
+    user = content.users.where(id: user_attributes['id']).first || content.users.new
     user_attributes.each do |key , value|
       next if key == 'id'
       user[key] = value
