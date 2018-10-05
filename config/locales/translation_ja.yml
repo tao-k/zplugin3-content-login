@@ -2,6 +2,7 @@ ja:
   activerecord:
     models:
       login/user: ユーザー
+      login/group: グループ
     attributes:
       login/user:
         id: No.
@@ -11,6 +12,11 @@ ja:
         password_digest: パスワード
         updated_at: 更新日時
         state: 状態
+        in_group_id: グループ
       login/piece/user:
         login_label: ログインリンク文字
         logout_label: ログアウトリンク文字
+      login/group:
+        id: No.
+        state: 状態
+        title: 名称

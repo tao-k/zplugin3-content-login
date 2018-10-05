@@ -1,10 +1,8 @@
-<h2><%= menu_header "#{@content.name}：#{Login::User.model_name.human}" %></h2>
+<h2><%= menu_header "#{@content.name}：#{Login::Group.model_name.human}" %></h2>
 <div class="actionMenu">
 <%- case action_name -%>
 <%- when 'index' -%>
   <%= link_to :new, { action: :new } if Core.user.has_priv?(:create, item: Core.concept) %>
-  <%= link_to "インポート", import_login_users_path(content: @content) %>
-  <%= link_to "エクスポート", login_users_path(content: @content, csv: 'do') %>
 <%- when 'show' -%>
   <%= link_to :index, { action: :index } %>
   <span class="separator"></span>

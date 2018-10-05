@@ -60,17 +60,17 @@ class Login::Admin::UsersController < Cms::Controller::Admin::Base
   private
 
   def user_params
-    params.require(:item).permit(:state, :account, :password, :creator_attributes => [:id, :group_id, :user_id])
+    params.require(:item).permit(:state, :account, :password, :in_group_id, :creator_attributes => [:id, :group_id, :user_id])
   end
 
   def export_csv(users)
     require 'csv'
     bom = %w(EF BB BF).map { |e| e.hex.chr }.join
     data = CSV.generate(bom, force_quotes: true) do |csv|
-      columns = [ "No.", "状態", "削除", "ID", "パスワード" ]
+      columns = [ "No.", "状態", "削除", "ID", "パスワード", "グループ" ]
       csv << columns
       users.each do |user|
-        csv << [user.id, user.state_text, nil, user.account, user.password]
+        csv << [user.id, user.state_text, nil, user.account, user.password, user.group.try!(:title)]
       end
     end
     send_data data, type: 'text/csv', filename: "#{@content.name}_データ一覧_#{Time.now.to_i}.csv"

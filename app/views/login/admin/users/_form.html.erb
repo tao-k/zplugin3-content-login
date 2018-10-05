@@ -13,6 +13,10 @@
     <th><%= @item.class.human_attribute_name :password %></th>
     <td><%= f.text_field :password, :class => 'id' %></td>
   </tr>
+  <tr>
+    <th><%= f.label :in_group_id %></th>
+    <td><%= f.select :in_group_id, @content.groups_for_option, include_blank: true %></td>
+  </tr>
 </table>
 
 <%= creator_form f %>

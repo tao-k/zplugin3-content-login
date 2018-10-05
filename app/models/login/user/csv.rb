@@ -8,11 +8,13 @@ class Login::User::Csv < Login::Csv
     user = content.users.where(id: row['No.']).first || content.users.new
     user_attributes = {}
     delete_attributes = {}
+    group_attributes  = {}
 
-    user_attributes['id']       = row['No.']
-    user_attributes['state']    = state_to_status(user, row['状態'])
-    user_attributes['account']  = row['ID']
-    user_attributes['password'] = row['パスワード']
+    user_attributes['id']          = row['No.']
+    user_attributes['state']       = state_to_status(user, row['状態'])
+    user_attributes['account']     = row['ID']
+    user_attributes['password']    = row['パスワード']
+    group_attributes['id']         = group_name_to_id(row['グループ'])
     delete_attributes['delete'] = row['削除']
 
     user_attributes.each do |key , value|
@@ -23,7 +25,8 @@ class Login::User::Csv < Login::Csv
     user.validate
     line.data_attributes = {
       user_attributes: user_attributes,
-      delete_attributes: delete_attributes
+      delete_attributes: delete_attributes,
+      group_attributes:  group_attributes
     }
     line.data_invalid = user.errors.blank? ? 0 : 1
     line.data_errors = user.errors.full_messages.to_a if user.errors.present?
@@ -35,9 +38,14 @@ class Login::User::Csv < Login::Csv
     return nil
   end
 
+  def group_name_to_id(group)
+    content.groups.find_by(title: group).try(:id)
+  end
+
   def register(line)
     user_attributes    = line.csv_data_attributes['user_attributes']
     delete_attributes  = line.csv_data_attributes['delete_attributes']
+    group_attributes   = line.csv_data_attributes['group_attributes']
     user = content.users.where(id: user_attributes['id']).first || content.users.new
     if user_attributes['id'].present? && user.present? &&  delete_attributes['delete'].present?
       user.destroy if delete_attributes['delete'] == '削除'
@@ -46,6 +54,7 @@ class Login::User::Csv < Login::Csv
         next if key == 'id'
         user[key] = value
       end
+      user.in_group_id = group_attributes['id']
       user.save
     end
     user
