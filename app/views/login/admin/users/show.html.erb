@@ -9,6 +9,10 @@
     <th><%= @item.class.human_attribute_name :password %></th>
     <td><%= @item.password %></td>
   </tr>
+  <tr>
+    <th><%= @item.class.human_attribute_name :in_group_id %></th>
+    <td><%= @item.group.try!(:title) %></td>
+  </tr>
 </table>
 
 

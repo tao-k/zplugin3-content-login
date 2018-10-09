@@ -8,6 +8,7 @@ class Login::Content::User < Cms::Content
     foreign_key: :content_id, class_name: 'Login::Content::Setting', dependent: :destroy
 
   has_many :users, foreign_key: :content_id, class_name: 'Login::User', dependent: :destroy
+  has_many :groups, foreign_key: :content_id, class_name: 'Login::Group', dependent: :destroy
 
   def redirect_url
     setting_value(:redirect_url)
@@ -23,6 +24,10 @@ class Login::Content::User < Cms::Content
       .where(user_table[:remember_token].not_eq(nil))
       .where(account: account)
       .where(remember_token: token).first
+  end
+
+  def groups_for_option
+    groups.where(state: :enabled).map { |g| [g.title, g.id] }
   end
 
 end

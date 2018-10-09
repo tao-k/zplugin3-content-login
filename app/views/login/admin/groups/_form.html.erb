@@ -1,0 +1,14 @@
+<table class="show">
+  <tr>
+    <th><%= @item.class.human_attribute_name :state %></th>
+    <td>
+        <%= f.radio_buttons :state, @item.states, :class => 'status' %>
+    </td>
+  </tr>
+  <tr>
+    <th><%= @item.class.human_attribute_name :title %></th>
+    <td><%= f.text_field :title %></td>
+  </tr>
+</table>
+
+<%= creator_form f %>

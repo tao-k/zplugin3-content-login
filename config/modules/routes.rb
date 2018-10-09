@@ -18,6 +18,9 @@ ZomekiCMS::Application.routes.draw do
           get  :import
         end
       end
+    resources(:groups,
+      :controller => 'admin/groups',
+      :path       => ':content/groups')
 
     ## nodes
     resources :node_users,
