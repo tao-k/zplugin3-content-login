@@ -1,10 +1,15 @@
 class Login::Group < ApplicationRecord
   include Sys::Model::Base
+  include Sys::Model::Auth::Manager
   include Sys::Model::Rel::Creator
   include Sys::Model::Rel::Editor
 
   has_many :users_groups, class_name: 'Login::UsersGroup'
   has_many :users, -> { order(:id) }, through: :users_groups
+
+  # Content
+  belongs_to :content, :foreign_key => :content_id, :class_name => 'Login::Content::User'
+  validates :content_id, :presence => true
 
   enum_ish :state, [:enabled, :disabled], predicate: true
 
