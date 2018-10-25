@@ -19,8 +19,7 @@ class Login::User < ApplicationRecord
   after_save :save_group, if: -> { @_in_group_id_changed }
 
   def group(load = nil)
-    return @group if @group && load
-    @group = groups(load).size == 0 ? nil : groups[0]
+    groups[0]
   end
 
   def group_id(load = nil)
